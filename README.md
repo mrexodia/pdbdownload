@@ -1,7 +1,7 @@
 # DownloadPDBSymbols
 
 <p align="center">
-    This Python script can be used to bypass IP source restrictions using HTTP headers.
+    A Python script to download PDB files associated with a Portable Executable (PE).
     <br>
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/p0dalirius/DownloadPDBSymbols">
     <a href="https://twitter.com/intent/follow?screen_name=podalirius_" title="Follow"><img src="https://img.shields.io/twitter/follow/podalirius_?label=Podalirius&style=social"></a>
