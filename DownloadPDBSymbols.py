@@ -12,6 +12,9 @@ import requests
 from rich import progress
 
 
+VERSION = "1.1"
+
+
 def download_pdb(download_dir, pdbname, guid, pdbage, verbose=False):
     download_url = "http://msdl.microsoft.com/download/symbols/%s/%s%X/%s" % (pdbname, guid.upper(), pdbage, pdbname)
     print("[>] Downloading %s" % download_url)
@@ -49,7 +52,9 @@ def get_pe_debug_infos(pathtopefile):
 
 
 def parseArgs():
-    parser = argparse.ArgumentParser(description="Description message")
+    print("DownloadPDBSymbols v%s - by @podalirius_\n" % VERSION)
+    
+    parser = argparse.ArgumentParser(description="A Python script to download PDB files associated with a Portable Executable (PE).")
 
     group_pesource = parser.add_mutually_exclusive_group(required=True)
     group_pesource.add_argument("-f", "--pe-file", default=None, help='')
