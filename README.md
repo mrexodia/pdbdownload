@@ -9,10 +9,6 @@
     <br>
 </p>
 
-
-
-![](./.github/)
-
 ## Features
 
  - [x] Download PDB symbols from `msdl.microsoft.com`.
