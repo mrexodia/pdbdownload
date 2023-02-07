@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# File name          : DownloadPDBSymbols.py
+# File name          : __main__.py
 # Author             : Podalirius (@podalirius_)
-# Date created       : 8 Feb 2022
+# Date created       : 7 Feb 2023
+
 
 import binascii
 import os
@@ -12,10 +13,10 @@ import requests
 from rich import progress
 
 
-VERSION = "1.1"
+VERSION = "1.2"
 
 
-def download_pdb(download_dir, pdbname, guid, pdbage, verbose=False):
+def download_pdb(download_dir, pdbname, guid, pdbage):
     download_url = "http://msdl.microsoft.com/download/symbols/%s/%s%X/%s" % (pdbname, guid.upper(), pdbage, pdbname)
     print("[>] Downloading %s" % download_url)
     r = requests.head(
@@ -52,20 +53,20 @@ def get_pe_debug_infos(pathtopefile):
 
 
 def parseArgs():
-    print("DownloadPDBSymbols v%s - by @podalirius_\n" % VERSION)
+    print("pdbdownload v%s - by @podalirius_\n" % VERSION)
     
-    parser = argparse.ArgumentParser(description="A Python script to download PDB files associated with a Portable Executable (PE).")
+    parser = argparse.ArgumentParser(description="Download PDB files associated with a Portable Executable (PE).")
 
     group_pesource = parser.add_mutually_exclusive_group(required=True)
-    group_pesource.add_argument("-f", "--pe-file", default=None, help='')
-    group_pesource.add_argument("-d", "--pe-dir", default=None, help='')
+    group_pesource.add_argument("-f", "--pe-file", default=None, help='Source PE file to get symbols for.')
+    group_pesource.add_argument("-d", "--pe-dir", default=None, help='Source directory where to get PE files to get symbols for.')
 
     parser.add_argument("-S", "--symbols-dir", default="./symbols/", required=False, help='Output dir where symbols will be downloaded.')
     parser.add_argument("-v", "--verbose", default=False, action="store_true", help='Verbose mode. (default: False)')
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+def main():
     options = parseArgs()
 
     if not os.path.exists(options.symbols_dir):
@@ -104,3 +105,6 @@ if __name__ == '__main__':
             print("  | Age     0x%x" % pdbage)
         download_pdb(options.symbols_dir, pdbname, guid, pdbage)
 
+
+if __name__ == '__main__':
+    main()
