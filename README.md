@@ -43,6 +43,12 @@ optional arguments:
 
 ![](./.github/example.png)
 
+To recursively download the PDBs of all executables in a folder, use:
+
+```
+pdbdownload -d . -S .
+```
+
 ## Contributing
 
 Pull requests are welcome. Feel free to open an issue if you want to add other features.
