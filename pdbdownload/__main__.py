@@ -16,8 +16,8 @@ from rich import progress
 VERSION = "1.3"
 
 
-def download_pdb(download_dir, pdbname, guid):
-    download_url = "https://msdl.microsoft.com/download/symbols/%s/%s/%s" % (pdbname, guid.upper(), pdbname)
+def download_pdb(download_dir, pdbname, signature):
+    download_url = "https://msdl.microsoft.com/download/symbols/%s/%s/%s" % (pdbname, signature.upper(), pdbname)
     print("[>] Downloading %s" % download_url)
     r = requests.head(
         download_url,
@@ -43,7 +43,10 @@ def get_pe_debug_infos(pathtopefile):
     raw_debug_data = [e for e in p.parse_debug_directory(pedata["IMAGE_DIRECTORY_ENTRY_DEBUG"].VirtualAddress, pedata["IMAGE_DIRECTORY_ENTRY_DEBUG"].Size) if e.entry is not None]
     raw_debug_data = raw_debug_data[0].entry
 
-    return raw_debug_data.PdbFileName.strip(b'\x00').decode("utf-8"), p.DIRECTORY_ENTRY_DEBUG[0].entry.Signature_String, raw_debug_data.Age
+    pdbname: str = raw_debug_data.PdbFileName.strip(b'\x00').decode("utf-8")
+    signature: str = p.DIRECTORY_ENTRY_DEBUG[0].entry.Signature_String
+
+    return pdbname, signature
 
 
 def parseArgs():
@@ -85,20 +88,20 @@ def main():
         for pef, subdir in list_of_pe_files:
             if options.verbose:
                 print("[>] Reading PE file '%s'" % pef)
-            pdbname, guid = get_pe_debug_infos(pef)
+            pdbname, signature = get_pe_debug_infos(pef)
             if options.verbose:
-                print("  | PdbName '%s'" % pdbname)
-                print("  | GUID    %s" % guid)
-            download_pdb(os.path.join(options.symbols_dir, subdir), pdbname, guid)
+                print("  | PdbName  '%s'" % pdbname)
+                print("  | Signature %s" % signature)
+            download_pdb(os.path.join(options.symbols_dir, subdir), pdbname, signature)
 
     elif options.pe_file is not None:
         if options.verbose:
             print("[>] Reading PE file '%s'" % options.pe_file)
-        pdbname, guid = get_pe_debug_infos(options.pe_file)
+        pdbname, signature = get_pe_debug_infos(options.pe_file)
         if options.verbose:
-            print("  | PdbName '%s'" % pdbname)
-            print("  | GUID    %s" % guid)
-        download_pdb(options.symbols_dir, pdbname, guid)
+            print("  | PdbName  '%s'" % pdbname)
+            print("  | Signature %s" % signature)
+        download_pdb(options.symbols_dir, pdbname, signature)
 
 
 if __name__ == '__main__':
