@@ -22,7 +22,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     author_email="podalirius@protonmail.com",
     packages=["pdbdownload"],
-    package_data={'pdbdownload': ['pdbdownload/']},
+    package_data={'pdbdownload': ['pdbdownload']},
     include_package_data=True,
     license="GPL2",
     classifiers=[
