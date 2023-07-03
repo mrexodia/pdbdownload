@@ -46,6 +46,9 @@ def get_pe_debug_infos(pathtopefile):
     pdbname: str = raw_debug_data.PdbFileName.strip(b'\x00').decode("utf-8")
     signature: str = p.DIRECTORY_ENTRY_DEBUG[0].entry.Signature_String
 
+    # If an absolute path is embedded the server uses just the filename
+    pdbname = pdbname.split("\\")[-1]
+
     return pdbname, signature
 
 
